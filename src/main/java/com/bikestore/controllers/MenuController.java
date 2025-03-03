@@ -163,9 +163,8 @@ public class MenuController {
 
         switch (getUserInput(options)) {
             case 0 -> System.out.println("Saindo...");
-            case 1 -> navegarMenu(new ProdutoMenuOperacao());
-            case 2 -> navegarMenu(new VendaMenuOperacao());
-            case 3 -> EstoqueController.gerenciarEstoque();
+            case 1 -> navegarMenu(new VendaMenuOperacao());
+            case 2 -> EstoqueController.gerenciarEstoque();
             default -> System.out.println("Opção inválida!");
         }
     }

@@ -2,7 +2,7 @@ com/bikestore/model/VendaSimples.class
 com/bikestore/model/Bicicleta.class
 com/bikestore/until.class
 com/bikestore/model/Acessorio.class
-com/bikestore/controllers/EstoqueMenuOperacao.class
+com/bikestore/controllers/interfaces/Venda.class
 com/bikestore/controllers/VendaController$NovaVendaMenu.class
 com/bikestore/controllers/interfaces/MenuOperacao.class
 com/bikestore/model/Produto.class
@@ -15,7 +15,6 @@ com/bikestore/controllers/MenuBase.class
 com/bikestore/controllers/base/MenuBase.class
 com/bikestore/controllers/VendaController.class
 com/bikestore/controllers/ProdutoMenuOperacao.class
-com/bikestore/model/Venda.class
 com/bikestore/controllers/MenuOperacao.class
 com/bikestore/App.class
 com/bikestore/controllers/MenuController.class
