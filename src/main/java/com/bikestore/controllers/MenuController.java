@@ -72,25 +72,8 @@ class VendaMenuOperacao extends MenuBase {
     protected void processarOpcao(int choice) {
         switch (choice) {
             case 0 -> MenuController.init();
-            case 1 -> System.out.println("Nova Venda - Em desenvolvimento");
-            case 2 -> System.out.println("Histórico de Vendas - Em desenvolvimento");
-        }
-    }
-}
-
-class EstoqueMenuOperacao extends MenuBase {
-    public EstoqueMenuOperacao() {
-        super("Consulta de Estoque",
-              "Consultar Produto",
-              "Relatório de Estoque");
-    }
-
-    @Override
-    protected void processarOpcao(int choice) {
-        switch (choice) {
-            case 0 -> MenuController.init();
-            case 1 -> System.out.println("Consultar Produto - Em desenvolvimento");
-            case 2 -> System.out.println("Relatório de Estoque - Em desenvolvimento");
+            case 1 -> VendaController.novaVenda();
+            case 2 -> VendaController.historicoVendas();
         }
     }
 }
@@ -172,9 +155,8 @@ public class MenuController {
 
     public static void init() {
         List<String> options = new ArrayList<>();
-        options.add("Gerenciar Produtos");
         options.add("Realizar Venda");
-        options.add("Consultar Estoque");
+        options.add("Gerenciar Estoque");
         options.add("Sair");
 
         createMenu(options, "Bike Store");
@@ -183,7 +165,7 @@ public class MenuController {
             case 0 -> System.out.println("Saindo...");
             case 1 -> navegarMenu(new ProdutoMenuOperacao());
             case 2 -> navegarMenu(new VendaMenuOperacao());
-            case 3 -> navegarMenu(new EstoqueMenuOperacao());
+            case 3 -> EstoqueController.gerenciarEstoque();
             default -> System.out.println("Opção inválida!");
         }
     }
