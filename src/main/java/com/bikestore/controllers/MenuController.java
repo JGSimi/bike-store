@@ -1,94 +1,190 @@
 package com.bikestore.controllers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
 import com.bikestore.until;
 
+// Interface para padronizar os menus
+interface MenuOperacao {
+    void exibir();
+    void executar();
+}
+
+// Classe abstrata base para menus
+abstract class MenuBase implements MenuOperacao {
+    protected final List<String> options;
+    protected final String titulo;
+
+    protected MenuBase(String titulo, String... opcoes) {
+        this.titulo = titulo;
+        this.options = new ArrayList<>();
+        this.options.addAll(Arrays.asList(opcoes));
+        this.options.add("Voltar");
+    }
+
+    @Override
+    public void exibir() {
+        MenuController.createMenu(options, titulo);
+    }
+
+    @Override
+    public void executar() {
+        exibir();
+        int choice = MenuController.getUserInput(options);
+        processarOpcao(choice);
+    }
+
+    protected abstract void processarOpcao(int choice);
+}
+
+class ProdutoMenuOperacao extends MenuBase {
+    public ProdutoMenuOperacao() {
+        super("Gerenciamento de Produtos",
+              "Cadastrar Produto",
+              "Editar Produto",
+              "Excluir Produto",
+              "Listar Produtos");
+    }
+
+    @Override
+    protected void processarOpcao(int choice) {
+        switch (choice) {
+            case 0 -> MenuController.init();
+            case 1 -> System.out.println("Cadastrar Produto - Em desenvolvimento");
+            case 2 -> System.out.println("Editar Produto - Em desenvolvimento");
+            case 3 -> System.out.println("Excluir Produto - Em desenvolvimento");
+            case 4 -> System.out.println("Listar Produtos - Em desenvolvimento");
+        }
+    }
+}
+
+class VendaMenuOperacao extends MenuBase {
+    public VendaMenuOperacao() {
+        super("Gestão de Vendas",
+              "Nova Venda",
+              "Histórico de Vendas");
+    }
+
+    @Override
+    protected void processarOpcao(int choice) {
+        switch (choice) {
+            case 0 -> MenuController.init();
+            case 1 -> System.out.println("Nova Venda - Em desenvolvimento");
+            case 2 -> System.out.println("Histórico de Vendas - Em desenvolvimento");
+        }
+    }
+}
+
+class EstoqueMenuOperacao extends MenuBase {
+    public EstoqueMenuOperacao() {
+        super("Consulta de Estoque",
+              "Consultar Produto",
+              "Relatório de Estoque");
+    }
+
+    @Override
+    protected void processarOpcao(int choice) {
+        switch (choice) {
+            case 0 -> MenuController.init();
+            case 1 -> System.out.println("Consultar Produto - Em desenvolvimento");
+            case 2 -> System.out.println("Relatório de Estoque - Em desenvolvimento");
+        }
+    }
+}
+
 //responsavel pela interface do usuario
-
 public class MenuController {
-      
-      /*
-       * funcao para criar menus
-       * @param options - lista de opcoes de menu
-       * @param message - mensagem de titulo do menu
-       */
-      public static void createMenu(List<String> options, String message) {
-            // Encontra o tamanho da maior string para ajustar o menu
-            int maxLength = message.length();
-            for (String opcao : options) {
-                  if (opcao.length() > maxLength) {
-                        maxLength = opcao.length();
-                  }
+    private static final Scanner scanner = new Scanner(System.in);
+    
+    private MenuController() {
+        // Construtor privado para evitar instanciação
+    }
+    
+    public static void createMenu(List<String> options, String message) {
+        int maxLength = calcularLarguraMaxima(message, options);
+        int larguraTotal = maxLength + 8;
+        String linha = "═".repeat(larguraTotal);
+        
+        imprimirCabecalho(message, linha, larguraTotal);
+        imprimirOpcoes(options, larguraTotal);
+        imprimirRodape(linha);
+    }
+
+    private static int calcularLarguraMaxima(String message, List<String> options) {
+        int maxLength = message.length();
+        for (String opcao : options) {
+            maxLength = Math.max(maxLength, opcao.length());
+        }
+        return maxLength;
+    }
+
+    private static void imprimirCabecalho(String message, String linha, int larguraTotal) {
+        System.out.println("\n╔" + linha + "╗");
+        System.out.println("║  " + until.centralizarTexto(message, larguraTotal - 4) + "  ║");
+        System.out.println("╠" + linha + "╣");
+    }
+
+    private static void imprimirOpcoes(List<String> options, int larguraTotal) {
+        for (int i = 0; i < options.size() - 1; i++) {
+            String opcaoFormatada = (i + 1) + " - " + options.get(i);
+            System.out.println("║  " + until.centralizarTexto(opcaoFormatada, larguraTotal - 4) + "  ║");
+        }
+        
+        String opcaoSair = "0 - " + options.get(options.size() - 1);
+        System.out.println("║  " + until.centralizarTexto(opcaoSair, larguraTotal - 4) + "  ║");
+    }
+
+    private static void imprimirRodape(String linha) {
+        System.out.println("╚" + linha + "╝");
+    }
+
+    public static int getUserInput(List<String> options) {
+        int opcao = -1;
+        boolean entradaValida = false;
+        
+        while (!entradaValida) {
+            System.out.print("\nDigite sua opção: ");
+            try {
+                opcao = Integer.parseInt(scanner.nextLine());
+                if (validarOpcao(opcao, options.size())) {
+                    entradaValida = true;
+                } else {
+                    System.out.println("Opção inválida! Por favor, escolha uma opção entre 0 e " + (options.size() - 1));
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Por favor, digite apenas números!");
             }
-            
-            // Adiciona espaço para numeração e formatação
-            int larguraTotal = maxLength + 8;
-            String linha = "═".repeat(larguraTotal);
-            
-            // Imprime o cabeçalho do menu
-            System.out.println("\n╔" + linha + "╗");
-            System.out.println("║  " + until.centralizarTexto(message, larguraTotal - 4) + "  ║");
-            System.out.println("╠" + linha + "╣");
-            
-            // Imprime as opções do menu
-            for (int i = 0; i < options.size() - 1; i++) {
-                  String opcaoFormatada = (i + 1) + " - " + options.get(i);
-                  System.out.println("║  " + until.centralizarTexto(opcaoFormatada, larguraTotal - 4) + "  ║");
-            }
-            
-            // Imprime a opção de sair/voltar como 0
-            String opcaoSair = "0 - " + options.get(options.size() - 1);
-            System.out.println("║  " + until.centralizarTexto(opcaoSair, larguraTotal - 4) + "  ║");
-            
-            // Imprime o rodapé do menu
-            System.out.println("╚" + linha + "╝");
-      }
+        }
+        
+        return opcao;
+    }
 
-      public static int getUserInput(List<String> options) {
-            Scanner scanner = new Scanner(System.in);
-            int opcao = -1;
-            boolean entradaValida = false;
-            
-            while (!entradaValida) {
-                  System.out.print("\nDigite sua opção: ");
-                  try {
-                        opcao = Integer.parseInt(scanner.nextLine());
-                        
-                        // Verifica se a opção está dentro do intervalo válido (0 até o tamanho da lista)
-                        if (opcao >= 0 && opcao <= options.size() - 1) {
-                              entradaValida = true;
-                        } else {
-                              System.out.println("Opção inválida! Por favor, escolha uma opção entre 0 e " + (options.size() - 1));
-                        }
-                  } catch (NumberFormatException e) {
-                        System.out.println("Por favor, digite apenas números!");
-                  }
-            }
-            
-            return opcao;
-      }
+    private static boolean validarOpcao(int opcao, int tamanhoLista) {
+        return opcao >= 0 && opcao <= tamanhoLista - 1;
+    }
 
-      public static void init() {
-            List<String> options = new ArrayList<>();
-            options.add("Cadastrar Cliente");
-            options.add("Cadastrar Produto");
-            options.add("Cadastrar Venda");
-            options.add("Sair");
+    private static void navegarMenu(MenuOperacao menu) {
+        menu.executar();
+    }
 
-            createMenu(options, "Bike Store");
+    public static void init() {
+        List<String> options = new ArrayList<>();
+        options.add("Gerenciar Produtos");
+        options.add("Realizar Venda");
+        options.add("Consultar Estoque");
+        options.add("Sair");
 
-            int choice = getUserInput(options);
+        createMenu(options, "Bike Store");
 
-            switch (choice) {
-                  case 0 -> System.out.println("Saindo...");
-                  case 1 -> System.out.println("ClienteController.init();");
-                  case 2 -> System.out.println("ProdutoController.init();");
-                  case 3 -> System.out.println("VendaController.init();");
-                  default -> System.out.println("Opção inválida!");
-            }
-      }
-      
+        switch (getUserInput(options)) {
+            case 0 -> System.out.println("Saindo...");
+            case 1 -> navegarMenu(new ProdutoMenuOperacao());
+            case 2 -> navegarMenu(new VendaMenuOperacao());
+            case 3 -> navegarMenu(new EstoqueMenuOperacao());
+            default -> System.out.println("Opção inválida!");
+        }
+    }
 }
