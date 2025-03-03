@@ -15,17 +15,23 @@ public class Acessorio extends Produto {
         this.tipo = tipo;
     }
 
+    /**
+     * Atualiza o estoque subtraindo a quantidade especificada
+     *
+     * @param quantidade Quantidade a ser removida do estoque
+     */
     @Override
-    public void atualizarEstoque(int quantidade){
+    public void atualizarEstoque(int quantidade) {
         setQuantidadenoEstoque(getQuantidadenoEstoque() - quantidade);
     }
 
-    //Getter e Setters
-    public String getTipo(){
+    // Getter
+    public String getTipo() {
         return tipo;
     }
 
-    public void setTipo(String Tipo){
+    // Setter
+    public void setTipo(String Tipo) {
         this.tipo = Tipo;
     }
 
