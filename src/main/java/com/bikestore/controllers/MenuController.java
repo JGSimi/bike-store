@@ -40,27 +40,6 @@ abstract class MenuBase implements MenuOperacao {
     protected abstract void processarOpcao(int choice);
 }
 
-class ProdutoMenuOperacao extends MenuBase {
-    public ProdutoMenuOperacao() {
-        super("Gerenciamento de Produtos",
-              "Cadastrar Produto",
-              "Editar Produto",
-              "Excluir Produto",
-              "Listar Produtos");
-    }
-
-    @Override
-    protected void processarOpcao(int choice) {
-        switch (choice) {
-            case 0 -> MenuController.init();
-            case 1 -> System.out.println("Cadastrar Produto - Em desenvolvimento");
-            case 2 -> System.out.println("Editar Produto - Em desenvolvimento");
-            case 3 -> System.out.println("Excluir Produto - Em desenvolvimento");
-            case 4 -> System.out.println("Listar Produtos - Em desenvolvimento");
-        }
-    }
-}
-
 class VendaMenuOperacao extends MenuBase {
     public VendaMenuOperacao() {
         super("Gestão de Vendas",
