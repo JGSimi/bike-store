@@ -3,13 +3,13 @@ package com.bikestore;
 public abstract class Produto {
     private String nome;
     private double preco;
-    private int quantidadeEstoque;
+    private int quantidadenoEstoque;
 
 
-public Produto(String nome, double preco, int quantidadeEstoque){
+public Produto(String nome, double preco, int quantidadenoEstoque){
     this.nome = nome;
     this.preco = preco;
-    this.quantidadeEstoque = quantidadeEstoque;
+    this.quantidadenoEstoque = quantidadenoEstoque;
 }
 
 public abstract void atualizarEstoque(int quantidade);
@@ -20,6 +20,14 @@ public String getNome(){
 
 public double getPreco(){
     return preco;
+}
+
+public int getQuantidadenoEstoque(){
+    return quantidadenoEstoque;
+}
+
+public void setQuantidadenoEstoque(int quantidadenoEstoque){
+    this.quantidadenoEstoque = quantidadenoEstoque;
 }
 
 }
