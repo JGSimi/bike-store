@@ -27,5 +27,42 @@ public class Bicicleta extends Produto{
         this.setQuantidadenoEstoque(this.getQuantidadenoEstoque() - quantidade);
     }
 
+    //Getters
+    public String getMarca(){
+        return marca;
+    }
+
+    public String getModelo(){
+        return modelo;
+    }
+
+    public String getTamanho(){
+        return tamanho;
+    }
+
+    //Setters
+    public void setMarca(String Marca){
+        this.marca = Marca;
+    }
+
+    public void setModelo(String Modelo){
+        this.modelo = Modelo;
+    }
+
+    public void setTamanho(String Tamanho){
+        this.tamanho = Tamanho;
+    }
+
+    @Override
+    public String toString() {
+        return "Bicicleta{" +
+                "nome='" + getNome() + '\'' +
+                ", preco=" + getPreco() +
+                ", quantidadeEstoque=" + getQuantidadenoEstoque() +
+                ", marca='" + marca + '\'' +
+                ", modelo='" + modelo + '\'' +
+                ", tamanho='" + tamanho + '\'' +
+                '}';
+    }
 }
 

@@ -19,4 +19,24 @@ public class Acessorio extends Produto {
     public void atualizarEstoque(int quantidade){
         setQuantidadenoEstoque(getQuantidadenoEstoque() - quantidade);
     }
+
+    //Getter e Setters
+    public String getTipo(){
+        return tipo;
+    }
+
+    public void setTipo(String Tipo){
+        this.tipo = Tipo;
+    }
+
+    @Override
+    public String toString() {
+        return "Acessorio{" +
+                "nome='" + getNome() + '\'' +
+                ", preco=" + getPreco() +
+                ", quantidadeEstoque=" + getQuantidadenoEstoque() +
+                ", tipo='" + tipo + '\'' +
+                '}';
+    }
 }
+

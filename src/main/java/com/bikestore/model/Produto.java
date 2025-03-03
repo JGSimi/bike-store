@@ -1,5 +1,6 @@
 package com.bikestore.model;
 
+
 public abstract class Produto {
     private final String nome;
     private final double preco;
@@ -27,6 +28,7 @@ public abstract class Produto {
     public abstract void atualizarEstoque(int quantidade);
 
     // Getters e Setters
+
     public String getNome() {
         return nome;
     }
@@ -42,5 +44,6 @@ public abstract class Produto {
     public void setQuantidadenoEstoque(int quantidadenoEstoque) {
         this.quantidadenoEstoque = quantidadenoEstoque;
     }
+
 
 }
