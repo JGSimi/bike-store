@@ -1,9 +1,9 @@
 package com.bikestore.model;
 
 public class Bicicleta extends Produto{
-    private final String marca;
-    private final String modelo;
-    private final String tamanho;
+    private String marca;
+    private String modelo;
+    private String tamanho;
 
     /**
      * @param nome              Nome da bicicleta
