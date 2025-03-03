@@ -1,4 +1,4 @@
-package com.bikestore;
+package com.bikestore.model;
 
 public class Acessorio extends Produto {
     private String tipo;
@@ -10,6 +10,6 @@ public class Acessorio extends Produto {
     
     @Override
     public void atualizarEstoque(int quantidade){
-        setQuantidadeEstoque(getQuantidadeEstoque() - quantidade);
+        setQuantidadenoEstoque(getQuantidadenoEstoque() - quantidade);
     }
 }

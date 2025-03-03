@@ -1,5 +1,4 @@
-package com.bikestore;
-
+package com.bikestore.model;
 
 public class Bicicleta extends Produto{
     private String marca;
@@ -15,7 +14,7 @@ public class Bicicleta extends Produto{
 
     @Override
     public void atualizarEstoque(int quantidade){
-        this.setQuantidadeEstoque(this.getQuantidadeEstoque() - quantidade);
+        this.setQuantidadenoEstoque(this.getQuantidadenoEstoque() - quantidade);
     }
 
 }
