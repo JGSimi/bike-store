@@ -1,5 +1,6 @@
 package com.bikestore;
 
+
 public class Bicicleta extends Produto{
     private String marca;
     private String modelo;
