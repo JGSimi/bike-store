@@ -5,7 +5,17 @@ public class Bicicleta extends Produto{
     private String modelo;
     private String tamanho;
 
-    public Bicicleta(String nome, double preco, int quantidadeEstoque, String marca, String modelo, String tamanho){
+    /**
+     * Construtor para a classe Bicicleta
+     *
+     * @param nome  Nome da bicicleta
+     * @param preco Preço da bicicleta
+     * @param quantidadeEstoque Quantidade inicial em estoque da bicicleta
+     * @param marca Marca da bicicleta
+     * @param modelo    Modelo da bicicleta
+     * @param tamanho   Tamanho da bicicleta
+     */
+    public Bicicleta(String nome, double preco, int quantidadeEstoque, String marca, String modelo, String tamanho) {
         super(nome, preco, quantidadeEstoque);
         this.marca = marca;
         this.modelo = modelo;
