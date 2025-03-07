@@ -17,6 +17,7 @@ public class VendaController {
     private static class NovaVendaMenu extends MenuBase {
         private final VendaSimples venda;
 
+        // Construtor do menu de nova venda
         public NovaVendaMenu() {
             super("Nova Venda",
                     "Adicionar Produto",
@@ -35,6 +36,7 @@ public class VendaController {
             }
         }
 
+        // Adiciona um produto ao carrinho da venda
         private void adicionarProduto() {
             try {
                 Produto produto = selecionarProduto();
@@ -49,27 +51,30 @@ public class VendaController {
             } catch (IllegalArgumentException e) {
                 System.out.println("Erro: " + e.getMessage());
             }
-            executar(); // Volta para o menu
+            executar();
         }
 
+        // Exibe o resumo do carrinho
         private void visualizarCarrinho() {
             System.out.println(venda.gerarResumo());
             System.out.println("\nPressione ENTER para continuar...");
             scanner.nextLine();
-            executar(); // Volta para o menu
+            executar();
         }
 
+        // Finaliza a venda
         private void finalizarVenda() {
             if (confirmarVenda(venda)) {
                 MenuController.init();
             } else {
-                executar(); // Volta para o menu se não confirmou
+                executar();
             }
         }
     }
 
     // Menu do Histórico de Vendas
     private static class HistoricoVendasMenu extends MenuBase {
+        // Construtor do menu de histórico de vendas
         public HistoricoVendasMenu() {
             super("Histórico de Vendas",
                     "Listar Todas as Vendas",
@@ -87,6 +92,7 @@ public class VendaController {
             }
         }
 
+        // Lista todas as vendas registradas
         private void listarTodasVendas() {
             if (historicoVendas.isEmpty()) {
                 System.out.println("Nenhuma venda registrada.");
@@ -101,6 +107,7 @@ public class VendaController {
             executar();
         }
 
+        // busca de vendas por data
         private void buscarPorData() {
             System.out.println("Funcionalidade em desenvolvimento");
             System.out.println("\nPressione ENTER para continuar...");
@@ -108,6 +115,7 @@ public class VendaController {
             executar();
         }
 
+        // geração de relatório de vendas
         private void gerarRelatorio() {
             System.out.println("Funcionalidade em desenvolvimento");
             System.out.println("\nPressione ENTER para continuar...");
@@ -116,16 +124,17 @@ public class VendaController {
         }
     }
 
-    // Métodos públicos para acesso externo
+    // Cria um novo processo de venda
     public static void novaVenda() {
         new NovaVendaMenu().executar();
     }
 
+    // Mostra o histórico de vendas
     public static void historicoVendas() {
         new HistoricoVendasMenu().executar();
     }
 
-    // Métodos auxiliares
+    // Auxilia na seleção de um produto
     private static Produto selecionarProduto() {
         if (Estoque.listarProdutos().isEmpty()) {
             System.out.println("Não há produtos disponíveis no estoque.");
@@ -136,14 +145,14 @@ public class VendaController {
 
         System.out.println("\nProdutos Disponíveis:");
         List<Produto> produtos = Estoque.listarProdutos();
-        
+
         for (int i = 0; i < produtos.size(); i++) {
             Produto p = produtos.get(i);
-            System.out.printf("%d. %s - R$ %.2f (%d em estoque)%n", 
-                            i + 1, 
-                            p.getNome(), 
-                            p.getPreco(), 
-                            p.getQuantidadenoEstoque());
+            System.out.printf("%d. %s - R$ %.2f (%d em estoque)%n",
+                    i + 1,
+                    p.getNome(),
+                    p.getPreco(),
+                    p.getQuantidadenoEstoque());
         }
 
         while (true) {
@@ -171,10 +180,11 @@ public class VendaController {
         }
     }
 
+    // Confirma a venda e registra no histórico
     private static boolean confirmarVenda(VendaSimples venda) {
         System.out.println(venda.gerarResumo());
         System.out.print("Confirmar venda? (S/N): ");
-        
+
         if (scanner.nextLine().equalsIgnoreCase("S")) {
             historicoVendas.add(venda);
             System.out.println("Venda realizada com sucesso!");

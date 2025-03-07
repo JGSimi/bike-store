@@ -18,6 +18,10 @@ public class VendaSimples implements Venda {
         this.valorTotal = 0.0;
     }
 
+    public double getValorTotal() {
+        return valorTotal;
+    }
+
     @Override
     public void adicionarProduto(Produto produto, int quantidade) {
         if (produto.getQuantidadenoEstoque() >= quantidade) {

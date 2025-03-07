@@ -1,5 +1,9 @@
 package com.bikestore.controllers;
 
+import com.bikestore.controllers.ClienteController;
+import com.bikestore.controllers.VendaController;
+import com.bikestore.controllers.EstoqueController;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -7,17 +11,28 @@ import java.util.Scanner;
 
 import com.bikestore.until;
 
-// Interface para padronizar os menus
+/**
+ * Interface que define operações básicas de um menu.
+ */
 interface MenuOperacao {
     void exibir();
+
     void executar();
 }
 
-// Classe abstrata base para menus
+/**
+ * Classe base para criação de menus.
+ */
 abstract class MenuBase implements MenuOperacao {
     protected final List<String> options;
     protected final String titulo;
 
+    /**
+     * Construtor para menus com título e opções.
+     *
+     * @param titulo Título do menu.
+     * @param opcoes Opções do menu.
+     */
     protected MenuBase(String titulo, String... opcoes) {
         this.titulo = titulo;
         this.options = new ArrayList<>();
@@ -37,14 +52,22 @@ abstract class MenuBase implements MenuOperacao {
         processarOpcao(choice);
     }
 
+    /**
+     * Processa a opção selecionada pelo usuário.
+     *
+     * @param choice Opção escolhida.
+     */
     protected abstract void processarOpcao(int choice);
 }
 
+/**
+ * Menu específico para operações de venda.
+ */
 class VendaMenuOperacao extends MenuBase {
     public VendaMenuOperacao() {
         super("Gestão de Vendas",
-              "Nova Venda",
-              "Histórico de Vendas");
+                "Nova Venda",
+                "Histórico de Vendas");
     }
 
     @Override
@@ -57,19 +80,27 @@ class VendaMenuOperacao extends MenuBase {
     }
 }
 
-//responsavel pela interface do usuario
+/**
+ * Controlador geral dos menus da aplicação.
+ */
 public class MenuController {
     private static final Scanner scanner = new Scanner(System.in);
-    
+
     private MenuController() {
         // Construtor privado para evitar instanciação
     }
-    
+
+    /**
+     * Cria e exibe o menu formatado na tela.
+     *
+     * @param options Lista de opções do menu.
+     * @param message Título do menu.
+     */
     public static void createMenu(List<String> options, String message) {
         int maxLength = calcularLarguraMaxima(message, options);
         int larguraTotal = maxLength + 8;
         String linha = "═".repeat(larguraTotal);
-        
+
         imprimirCabecalho(message, linha, larguraTotal);
         imprimirOpcoes(options, larguraTotal);
         imprimirRodape(linha);
@@ -94,7 +125,7 @@ public class MenuController {
             String opcaoFormatada = (i + 1) + " - " + options.get(i);
             System.out.println("║  " + until.centralizarTexto(opcaoFormatada, larguraTotal - 4) + "  ║");
         }
-        
+
         String opcaoSair = "0 - " + options.get(options.size() - 1);
         System.out.println("║  " + until.centralizarTexto(opcaoSair, larguraTotal - 4) + "  ║");
     }
@@ -103,10 +134,16 @@ public class MenuController {
         System.out.println("╚" + linha + "╝");
     }
 
+    /**
+     * Obtém a entrada do usuário garantindo que seja válida.
+     *
+     * @param options Lista de opções disponíveis.
+     * @return Opção escolhida pelo usuário.
+     */
     public static int getUserInput(List<String> options) {
         int opcao = -1;
         boolean entradaValida = false;
-        
+
         while (!entradaValida) {
             System.out.print("\nDigite sua opção: ");
             try {
@@ -120,7 +157,7 @@ public class MenuController {
                 System.out.println("Por favor, digite apenas números!");
             }
         }
-        
+
         return opcao;
     }
 
@@ -132,18 +169,23 @@ public class MenuController {
         menu.executar();
     }
 
+    /**
+     * Inicializa o menu principal da aplicação.
+     */
     public static void init() {
         List<String> options = new ArrayList<>();
         options.add("Realizar Venda");
         options.add("Gerenciar Estoque");
+        options.add("Gerenciar Clientes");
         options.add("Sair");
 
         createMenu(options, "Bike Store");
 
         switch (getUserInput(options)) {
-            case 0 -> System.out.println("Saindo...");
+            case 0 -> System.exit(0);
             case 1 -> navegarMenu(new VendaMenuOperacao());
             case 2 -> EstoqueController.gerenciarEstoque();
+            case 3 -> ClienteController.gerenciarClientes();
             default -> System.out.println("Opção inválida!");
         }
     }

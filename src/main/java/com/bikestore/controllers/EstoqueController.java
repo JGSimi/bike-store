@@ -12,16 +12,28 @@ import com.bikestore.model.Produto;
 public class EstoqueController {
     private static final Scanner scanner = new Scanner(System.in);
 
+    /**
+     * Menu de gerenciamento de estoque.
+     */
     private static class EstoqueMenu extends MenuBase {
+
+        /**
+         * Construtor que inicializa o menu com opções de estoque.
+         */
         public EstoqueMenu() {
             super("Gerenciamento de Estoque",
-                  "Adicionar Novo Produto",
-                  "Remover Produto",
-                  "Listar Produtos",
-                  "Buscar Produto",
-                  "Atualizar Estoque");
+                    "Adicionar Novo Produto",
+                    "Remover Produto",
+                    "Listar Produtos",
+                    "Buscar Produto",
+                    "Atualizar Estoque");
         }
 
+        /**
+         * Processa a opção escolhida pelo usuário.
+         *
+         * @param choice Opção selecionada pelo usuário no menu.
+         */
         @Override
         protected void processarOpcao(int choice) {
             switch (choice) {
@@ -34,6 +46,9 @@ public class EstoqueController {
             }
         }
 
+        /**
+         * Adiciona um novo produto ao estoque, podendo ser uma bicicleta ou um acessório.
+         */
         private void adicionarNovoProduto() {
             System.out.println("\nTipo de Produto:");
             System.out.println("1. Bicicleta");
@@ -75,6 +90,9 @@ public class EstoqueController {
             executar();
         }
 
+        /**
+         * Remove o produto selecionado do estoque.
+         */
         private void removerProduto() {
             listarProdutos();
             System.out.print("\nDigite o número do produto para remover (0 para cancelar): ");
@@ -95,6 +113,9 @@ public class EstoqueController {
             executar();
         }
 
+        /**
+         * Lista todos os produtos disponíveis no estoque.
+         */
         private void listarProdutos() {
             List<Produto> produtos = Estoque.listarProdutos();
             if (produtos.isEmpty()) {
@@ -113,14 +134,17 @@ public class EstoqueController {
             executar();
         }
 
+        /**
+         * Busca um produto no estoque pelo nome.
+         */
         private void buscarProduto() {
             System.out.print("Digite o nome do produto: ");
             String nome = scanner.nextLine();
 
             Estoque.buscarProdutoPorNome(nome).ifPresentOrElse(
-                produto -> System.out.printf("%s - R$ %.2f (%d em estoque)%n",
-                        produto.getNome(), produto.getPreco(), produto.getQuantidadenoEstoque()),
-                () -> System.out.println("Produto não encontrado.")
+                    produto -> System.out.printf("%s - R$ %.2f (%d em estoque)%n",
+                            produto.getNome(), produto.getPreco(), produto.getQuantidadenoEstoque()),
+                    () -> System.out.println("Produto não encontrado.")
             );
 
             System.out.println("\nPressione ENTER para continuar...");
@@ -128,6 +152,9 @@ public class EstoqueController {
             executar();
         }
 
+        /**
+         * Atualiza a quantidade em estoque de um produto selecionado.
+         */
         private void atualizarEstoque() {
             listarProdutos();
             System.out.print("\nDigite o número do produto para atualizar (0 para cancelar): ");
@@ -151,7 +178,9 @@ public class EstoqueController {
         }
     }
 
-    // Método público para acesso externo
+    /**
+     * Inicia o gerenciamento de estoque exibindo o menu.
+     */
     public static void gerenciarEstoque() {
         new EstoqueMenu().executar();
     }
