@@ -210,7 +210,6 @@ public class ClienteController {
         System.out.println("CPF: " + cliente.getCpf());
         System.out.println("Telefone: " + cliente.getTelefone());
         System.out.println("Email: " + cliente.getEmail());
-        System.out.println("Tipo: " + cliente.getTipo().getDescricao());
         System.out.println("Data de Cadastro: " + cliente.getDataCadastro());
     }
 }

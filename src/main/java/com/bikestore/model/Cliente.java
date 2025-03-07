@@ -9,12 +9,10 @@ public class Cliente {
     private String cpf;
     private String telefone;
     private String email;
-    private TipoCliente tipo;
     private List<VendaSimples> historicoCompras;
     private LocalDate dataCadastro;
 
     public Cliente() {
-        this.tipo = TipoCliente.REGULAR;
         this.historicoCompras = new ArrayList<>();
         this.dataCadastro = LocalDate.now();
     }
@@ -60,38 +58,17 @@ public class Cliente {
         this.email = email;
     }
 
-    public TipoCliente getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(TipoCliente tipo) {
-        this.tipo = tipo;
-    }
-
     public LocalDate getDataCadastro() {
         return dataCadastro;
     }
 
     public void adicionarCompra(VendaSimples venda) {
         this.historicoCompras.add(venda);
-        atualizarTipoCliente();
-    }
-
-    private void atualizarTipoCliente() {
-        double totalCompras = historicoCompras.stream()
-                .mapToDouble(VendaSimples::getValorTotal)
-                .sum();
-
-        if (totalCompras >= 10000) {
-            this.tipo = TipoCliente.VIP;
-        } else if (totalCompras >= 5000) {
-            this.tipo = TipoCliente.PREMIUM;
-        }
     }
 
     @Override
     public String toString() {
-        return String.format("Cliente: %s | CPF: %s | Tipo: %s",
-                nome, cpf, tipo.getDescricao());
+        return String.format("Cliente: %s | CPF: %s",
+                nome, cpf);
     }
 }
