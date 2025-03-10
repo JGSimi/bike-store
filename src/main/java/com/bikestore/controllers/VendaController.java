@@ -8,6 +8,7 @@ import com.bikestore.controllers.base.MenuBase;
 import com.bikestore.model.Estoque;
 import com.bikestore.model.Produto;
 import com.bikestore.model.VendaSimples;
+import com.bikestore.model.Cliente;
 
 public class VendaController {
     private static final Scanner scanner = new Scanner(System.in);
@@ -16,24 +17,60 @@ public class VendaController {
     // Menu de Nova Venda
     private static class NovaVendaMenu extends MenuBase {
         private final VendaSimples venda;
+        private Cliente cliente;
 
         // Construtor do menu de nova venda
         public NovaVendaMenu() {
             super("Nova Venda",
+                    "Selecionar Cliente",
                     "Adicionar Produto",
                     "Visualizar Carrinho",
                     "Finalizar Venda");
             this.venda = new VendaSimples();
+            this.cliente = null;
         }
 
         @Override
         protected void processarOpcao(int choice) {
             switch (choice) {
                 case 0 -> MenuController.init();
-                case 1 -> adicionarProduto();
-                case 2 -> visualizarCarrinho();
-                case 3 -> finalizarVenda();
+                case 1 -> selecionarCliente();
+                case 2 -> adicionarProduto();
+                case 3 -> visualizarCarrinho();
+                case 4 -> finalizarVenda();
             }
+        }
+
+        private void selecionarCliente() {
+            System.out.println("\n=== Selecionar Cliente ===");
+            System.out.println("1 - Selecionar Cliente Existente");
+            System.out.println("2 - Cadastrar Novo Cliente");
+            System.out.println("0 - Voltar");
+
+            try {
+                int opcao = Integer.parseInt(scanner.nextLine());
+                switch (opcao) {
+                    case 1 -> {
+                        System.out.println("Digite o CPF do cliente: ");
+                        String cpf = scanner.nextLine();
+                        cliente = ClienteController.buscarClientePorCPF(cpf);
+                        if (cliente != null){
+                            System.out.println("Cliente selecionado com sucesso!" + cliente);
+                            venda.setCliente(cliente);
+                        }
+                    }
+
+                    case 2 -> {
+                        cliente = ClienteController.cadastrarCliente();
+                        if (cliente != null){
+                            venda.setCliente(cliente);
+                        }
+                    }
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Opção Invalida");
+            }
+            executar();
         }
 
         // Adiciona um produto ao carrinho da venda
@@ -64,6 +101,11 @@ public class VendaController {
 
         // Finaliza a venda
         private void finalizarVenda() {
+            if (cliente == null) {
+                System.out.println("É necessario selecionar um cliente primeiro");
+                executar();
+                return;
+            }
             if (confirmarVenda(venda)) {
                 MenuController.init();
             } else {

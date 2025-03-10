@@ -67,6 +67,7 @@ class VendaMenuOperacao extends MenuBase {
     public VendaMenuOperacao() {
         super("Gestão de Vendas",
                 "Nova Venda",
+                "Gerenciar Clientes",
                 "Histórico de Vendas");
     }
 
@@ -75,7 +76,8 @@ class VendaMenuOperacao extends MenuBase {
         switch (choice) {
             case 0 -> MenuController.init();
             case 1 -> VendaController.novaVenda();
-            case 2 -> VendaController.historicoVendas();
+            case 2 -> ClienteController.gerenciarClientes();
+            case 3 -> VendaController.historicoVendas();
         }
     }
 }

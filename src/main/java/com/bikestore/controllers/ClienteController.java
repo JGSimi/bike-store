@@ -10,13 +10,10 @@ import java.util.Scanner;
 import java.util.Optional;
 
 public class ClienteController {
-    // Lista estática para armazenar os clientes cadastrados
     private static final List<Cliente> clientes = new ArrayList<>();
-    private static final Scanner scanner = new Scanner(System.in); // Scanner para entrada de dados pelo usuário
+    private static final Scanner scanner = new Scanner(System.in);
 
-    // Classe aninhada que gerencia o menu de operações do cliente
     private static class ClienteMenu extends MenuBase {
-        // Construtor do menu com as opções disponíveis
         public ClienteMenu() {
             super("Gerenciamento de Clientes",
                     "Cadastrar Cliente",
@@ -26,11 +23,10 @@ public class ClienteController {
                     "Remover Cliente");
         }
 
-        // Processa a opção escolhida no menu
         @Override
         protected void processarOpcao(int choice) {
             switch (choice) {
-                case 0 -> MenuController.init(); // Voltar para o menu principal
+                case 0 -> MenuController.init();
                 case 1 -> cadastrarCliente();
                 case 2 -> buscarCliente();
                 case 3 -> listarClientes();
@@ -39,15 +35,12 @@ public class ClienteController {
             }
         }
 
-        // Método para cadastrar um novo cliente
         private void cadastrarCliente() {
             System.out.println("\n=== Cadastro de Cliente ===");
 
-            // Entrada do nome
             System.out.print("Nome: ");
             String nome = scanner.nextLine();
 
-            // Entrada e validação do CPF
             String cpf;
             do {
                 System.out.print("CPF (apenas números): ");
@@ -61,18 +54,15 @@ public class ClienteController {
                 }
             } while (!ValidadorCliente.validarCPF(cpf));
 
-            // Entrada do telefone
             System.out.print("Telefone: ");
             String telefone = scanner.nextLine();
 
-            // Entrada e validação do email
             String email;
             do {
                 System.out.print("Email: ");
                 email = scanner.nextLine();
             } while (!ValidadorCliente.validarEmail(email));
 
-            // Criar e adicionar cliente à lista
             Cliente cliente = new Cliente(nome, cpf, telefone, email);
             clientes.add(cliente);
             System.out.println("\nCliente cadastrado com sucesso!");
@@ -81,7 +71,6 @@ public class ClienteController {
             executar();
         }
 
-        // Método para buscar um cliente por CPF
         private void buscarCliente() {
             System.out.println("\n=== Buscar Cliente ===");
             System.out.print("Digite o CPF do cliente: ");
@@ -99,7 +88,6 @@ public class ClienteController {
             executar();
         }
 
-        // Método para listar todos os clientes cadastrados
         private void listarClientes() {
             if (clientes.isEmpty()) {
                 System.out.println("\nNenhum cliente cadastrado!");
@@ -115,7 +103,6 @@ public class ClienteController {
             executar();
         }
 
-        // Método para atualizar os dados de um cliente
         private void atualizarCliente() {
             System.out.println("\n=== Atualizar Cliente ===");
             System.out.print("Digite o CPF do cliente: ");
@@ -136,7 +123,6 @@ public class ClienteController {
 
             System.out.println("\nDigite os novos dados (ou pressione ENTER para manter o valor atual):");
 
-            // Atualização condicional dos campos
             System.out.print("Novo nome [" + cliente.getNome() + "]: ");
             String novoNome = scanner.nextLine();
             if (!novoNome.isEmpty()) cliente.setNome(novoNome);
@@ -157,7 +143,6 @@ public class ClienteController {
             executar();
         }
 
-        // Método para remover um cliente
         private void removerCliente() {
             System.out.println("\n=== Remover Cliente ===");
             System.out.print("Digite o CPF do cliente: ");
@@ -176,7 +161,6 @@ public class ClienteController {
             System.out.println("\nDados do cliente a ser removido:");
             exibirDetalhesCliente(cliente);
 
-            // Confirmação da remoção
             System.out.print("\nConfirma a remoção? (S/N): ");
             String confirmacao = scanner.nextLine();
 
@@ -192,24 +176,63 @@ public class ClienteController {
         }
     }
 
-    // Inicia o gerenciamento de clientes pelo menu
     public static void gerenciarClientes() {
         new ClienteMenu().executar();
     }
 
-    // Busca um cliente na lista pelo CPF
     private static Optional<Cliente> buscarClientePorCPF(String cpf) {
         return clientes.stream()
                 .filter(c -> c.getCpf().equals(cpf))
                 .findFirst();
     }
 
-    // Exibe os detalhes de um cliente
     private static void exibirDetalhesCliente(Cliente cliente) {
         System.out.println("Nome: " + cliente.getNome());
         System.out.println("CPF: " + cliente.getCpf());
         System.out.println("Telefone: " + cliente.getTelefone());
         System.out.println("Email: " + cliente.getEmail());
         System.out.println("Data de Cadastro: " + cliente.getDataCadastro());
+    }
+
+    public static Cliente cadastrarNovoCliente() {
+        System.out.println("\n=== Cadastro de Cliente ===");
+
+        System.out.print("Nome: ");
+        String nome = scanner.nextLine();
+
+        String cpf;
+        do {
+            System.out.print("CPF (apenas números): ");
+            cpf = scanner.nextLine();
+            if (buscarClientePorCPF(cpf).isPresent()) {
+                System.out.println("CPF já cadastrado!");
+                return null;
+            }
+        } while (!ValidadorCliente.validarCPF(cpf));
+
+        System.out.print("Telefone: ");
+        String telefone = scanner.nextLine();
+
+        String email;
+        do {
+            System.out.print("Email: ");
+            email = scanner.nextLine();
+        } while (!ValidadorCliente.validarEmail(email));
+
+        Cliente cliente = new Cliente(nome, cpf, telefone, email);
+        clientes.add(cliente);
+        return cliente;
+    }
+
+    public static Optional<Cliente> getClientePorCPF(String cpf) {
+        return buscarClientePorCPF(cpf);
+    }
+
+    public static List<Cliente> getClientes() {
+        return new ArrayList<>(clientes);
+    }
+
+    public static boolean existeCliente(String cpf) {
+        return buscarClientePorCPF(cpf).isPresent();
     }
 }
