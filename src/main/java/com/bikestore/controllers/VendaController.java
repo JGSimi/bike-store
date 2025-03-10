@@ -53,15 +53,18 @@ public class VendaController {
                     case 1 -> {
                         System.out.println("Digite o CPF do cliente: ");
                         String cpf = scanner.nextLine();
-                        cliente = ClienteController.buscarClientePorCPF(cpf);
-                        if (cliente != null){
-                            System.out.println("Cliente selecionado com sucesso!" + cliente);
+                        var clienteOpt = ClienteController.getClientePorCPF(cpf);
+                        if (clienteOpt.isPresent()){
+                            cliente = clienteOpt.get();
+                            System.out.println("Cliente selecionado com sucesso");
                             venda.setCliente(cliente);
+                        } else {
+                            System.out.println("Cliente não encontrado");
                         }
                     }
 
                     case 2 -> {
-                        cliente = ClienteController.cadastrarCliente();
+                        cliente = ClienteController.cadastrarNovoCliente();
                         if (cliente != null){
                             venda.setCliente(cliente);
                         }
