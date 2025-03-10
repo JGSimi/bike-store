@@ -36,36 +36,10 @@ public class ClienteController {
         }
 
         private void cadastrarCliente() {
-            System.out.println("\n=== Cadastro de Cliente ===");
-
-            System.out.print("Nome: ");
-            String nome = scanner.nextLine();
-
-            String cpf;
-            do {
-                System.out.print("CPF (apenas números): ");
-                cpf = scanner.nextLine();
-                if (buscarClientePorCPF(cpf).isPresent()) {
-                    System.out.println("CPF já cadastrado!");
-                    System.out.println("\nPressione ENTER para continuar...");
-                    scanner.nextLine();
-                    executar();
-                    return;
-                }
-            } while (!ValidadorCliente.validarCPF(cpf));
-
-            System.out.print("Telefone: ");
-            String telefone = scanner.nextLine();
-
-            String email;
-            do {
-                System.out.print("Email: ");
-                email = scanner.nextLine();
-            } while (!ValidadorCliente.validarEmail(email));
-
-            Cliente cliente = new Cliente(nome, cpf, telefone, email);
-            clientes.add(cliente);
-            System.out.println("\nCliente cadastrado com sucesso!");
+            Cliente novoCliente = cadastrarNovoCliente();
+            if (novoCliente != null) {
+                System.out.println("\nCliente cadastrado com sucesso!");
+            }
             System.out.println("\nPressione ENTER para continuar...");
             scanner.nextLine();
             executar();
@@ -76,7 +50,7 @@ public class ClienteController {
             System.out.print("Digite o CPF do cliente: ");
             String cpf = scanner.nextLine();
 
-            Optional<Cliente> clienteOpt = buscarClientePorCPF(cpf);
+            Optional<Cliente> clienteOpt = getClientePorCPF(cpf);
             if (clienteOpt.isPresent()) {
                 Cliente cliente = clienteOpt.get();
                 exibirDetalhesCliente(cliente);
@@ -108,7 +82,7 @@ public class ClienteController {
             System.out.print("Digite o CPF do cliente: ");
             String cpf = scanner.nextLine();
 
-            Optional<Cliente> clienteOpt = buscarClientePorCPF(cpf);
+            Optional<Cliente> clienteOpt = getClientePorCPF(cpf);
             if (clienteOpt.isEmpty()) {
                 System.out.println("Cliente não encontrado!");
                 System.out.println("\nPressione ENTER para continuar...");
@@ -148,7 +122,7 @@ public class ClienteController {
             System.out.print("Digite o CPF do cliente: ");
             String cpf = scanner.nextLine();
 
-            Optional<Cliente> clienteOpt = buscarClientePorCPF(cpf);
+            Optional<Cliente> clienteOpt = getClientePorCPF(cpf);
             if (clienteOpt.isEmpty()) {
                 System.out.println("Cliente não encontrado!");
                 System.out.println("\nPressione ENTER para continuar...");
@@ -180,7 +154,7 @@ public class ClienteController {
         new ClienteMenu().executar();
     }
 
-    private static Optional<Cliente> buscarClientePorCPF(String cpf) {
+    public static Optional<Cliente> getClientePorCPF(String cpf) {
         return clientes.stream()
                 .filter(c -> c.getCpf().equals(cpf))
                 .findFirst();
@@ -204,7 +178,7 @@ public class ClienteController {
         do {
             System.out.print("CPF (apenas números): ");
             cpf = scanner.nextLine();
-            if (buscarClientePorCPF(cpf).isPresent()) {
+            if (getClientePorCPF(cpf).isPresent()) {
                 System.out.println("CPF já cadastrado!");
                 return null;
             }
@@ -224,15 +198,11 @@ public class ClienteController {
         return cliente;
     }
 
-    public static Optional<Cliente> getClientePorCPF(String cpf) {
-        return buscarClientePorCPF(cpf);
-    }
-
     public static List<Cliente> getClientes() {
         return new ArrayList<>(clientes);
     }
 
     public static boolean existeCliente(String cpf) {
-        return buscarClientePorCPF(cpf).isPresent();
+        return getClientePorCPF(cpf).isPresent();
     }
 }
